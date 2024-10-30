@@ -20,13 +20,7 @@ time = np.arange(data.shape[0]) / rate
 onsets, filtered_signal = OnsetDetection.Onset_Detection(data, rate, time_slot_width, rho, laMbda, threshold)
 onsets = OnsetDetection.refine_onsets(onsets, rate, time_slot_width, min_interval=0.15, start_offset=0.2, end_offset=0.2)
 
-plt.figure(figsize = (15, 3))
-plt.plot(time, data)
-for onset in onsets:
-    onset_time = onset * time_slot_width
-    plt.axvline(x=onset_time, color='red', linestyle='--', label='Onset' if onset == onsets[0] else "")
-plt.title('ONSET DETECTION')
-plt.show()
+OnsetDetection.plot_onsets(time, data, onsets, time_slot_width)
 
 # ---------------------PITCHESTIMATION-------------------
-fft_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width)
+fft_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width, L = 10)
