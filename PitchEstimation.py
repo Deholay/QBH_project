@@ -8,7 +8,7 @@ def create_smoother(L):
     smoother = np.array([(L - abs(m)) / L**2 if abs(m) < L else 0 for m in range(-L, L+1)])
     return smoother
 
-def fft_between_onsets(data, rate, onsets, time_slot_width, L=10):
+def fft_between_onsets(data, rate, onsets, time_slot_width, L=10, PLOT_PITCH = True):
     # Generate the smoother based on L
     smoother = create_smoother(L)
     
@@ -53,15 +53,68 @@ def fft_between_onsets(data, rate, onsets, time_slot_width, L=10):
         fft_results.append((freq_axis, smoothed_fft_result))
         pitch_results.append(f0)
 
-        # Plot the smoothed FFT result for this segment
-        plt.figure(figsize=(10, 5))
-        plt.plot(freq_axis[:len(freq_axis)//2], smoothed_fft_result[:len(smoothed_fft_result)//2])
-        plt.title(f'Smoothed FFT of Segment between Onset {i} and Onset {i+1}')
-        plt.xlabel('Frequency (Hz)')
-        plt.ylabel('Magnitude')
-        if f0:
-            plt.axvline(x=f0, color='red', linestyle='--', label=f'Pitch f0 = {f0:.2f} Hz')
-            plt.legend()
-        plt.show()
+        if(PLOT_PITCH == True):
+            # Plot the smoothed FFT result for this segment
+            plt.figure(figsize=(10, 5))
+            plt.plot(freq_axis[:len(freq_axis)//2], smoothed_fft_result[:len(smoothed_fft_result)//2])
+            plt.title(f'Smoothed FFT of Segment between Onset {i} and Onset {i+1}')
+            plt.xlabel('Frequency (Hz)')
+            plt.ylabel('Magnitude')
+            if f0:
+                plt.axvline(x=f0, color='red', linestyle='--', label=f'Pitch f0 = {f0:.2f} Hz')
+                plt.legend()
+            plt.show()
 
     return fft_results, pitch_results
+
+# Convert pitch to MIDI and calculate MIDI differences
+def calculate_midi_differences(pitch_results):
+    # Convert each fundamental frequency to a MIDI note number
+    midi_numbers = [48 + 12 * np.log2(f0 / 261.63) for f0 in pitch_results if f0]
+    
+    # Calculate the differences between consecutive MIDI numbers
+    midi_differences = np.diff(midi_numbers)
+    
+    # Print MIDI differences
+    print("MIDI Differences:", midi_differences)
+    
+    return midi_differences
+
+# Calculate beat intervals
+def calculate_beat_intervals(onsets, time_slot_width):
+    # Calculate intervals between consecutive onsets
+    intervals = np.diff(onsets) * time_slot_width  # Convert onset intervals to seconds
+    
+    # Find the median interval (b0)
+    b0 = np.median(intervals)
+    
+    # Calculate beat for each interval
+    beats = [2 ** np.round(np.log2(interval / b0)) for interval in intervals]
+    
+    # Print beat intervals
+    print("Beat Intervals:", beats)
+    
+    return beats
+
+
+# def plot_pitch(fft_results, pitch_results):
+#     num_segments = len(fft_results)
+#     fig, axes = plt.subplots(num_segments, 1, figsize=(10, 5 * num_segments))
+
+#     # Plot each segment's FFT result in a separate subplot
+#     for i, (freq_axis, smoothed_fft_result) in enumerate(fft_results):
+#         ax = axes[i] if num_segments > 1 else axes  # Handle single subplot case
+#         ax.plot(freq_axis[:len(freq_axis)//2], smoothed_fft_result[:len(smoothed_fft_result)//2])
+#         ax.set_title(f'Smoothed FFT of Segment between Onset {i} and Onset {i+1}')
+#         # ax.set_xlabel('Frequency (Hz)')
+#         # ax.set_ylabel('Magnitude')
+        
+#         # Plot fundamental frequency if detected
+#         f0 = pitch_results[i]
+#         if f0:
+#             ax.axvline(x=f0, color='red', linestyle='--', label=f'Pitch f0 = {f0:.2f} Hz')
+#             ax.legend()
+
+#     # Adjust layout for better spacing
+#     plt.tight_layout()
+#     plt.show()

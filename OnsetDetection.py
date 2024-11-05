@@ -6,14 +6,13 @@ from scipy.signal import convolve
 def load_audio(file_path):
     # Load the audio file
     rate, data = wav.read(file_path)
+    time = np.arange(data.shape[0]) / rate
     # If stereo, take one channel
     if len(data.shape) > 1:
         data = data[:, 0]
-    return data, rate
+    return data, rate, time
 
 def Onset_Detection(data, rate, time_slot_width, rho = 0.02, laMbda = 0.7, threshold = 4.5):
-    
-    time = np.arange(data.shape[0]) / rate
 
     # -------------Step1. find envelope amplitude-----------------------------------------
     n0 = int(time_slot_width * rate)
@@ -39,7 +38,7 @@ def Onset_Detection(data, rate, time_slot_width, rho = 0.02, laMbda = 0.7, thres
     return onsets, filtered_signal
 
 
-def refine_onsets(onsets, rate, time_slot_width, min_interval = 0.15, start_offset = 0.2, end_offset = 0.2):
+def refine_onsets(onsets, data, rate, time_slot_width, min_interval = 0.15, start_offset = 0.2, end_offset = 0.2, PLOT_ONSET = True):
     # Convert 0.2 seconds and 0.15 seconds to samples
     start_limit = int(start_offset / time_slot_width)           # start > 0.2
     end_limit = int((rate - end_offset) / time_slot_width)      # end < L - 0.2
@@ -55,13 +54,23 @@ def refine_onsets(onsets, rate, time_slot_width, min_interval = 0.15, start_offs
         if i == 0 or (refined_onsets[i] - refined_onsets[i-1] >= min_interval_limit):
             final_onsets.append(refined_onsets[i])
 
+    time = np.arange(data.shape[0]) / rate
+    if(PLOT_ONSET):
+        plt.figure(figsize = (15, 3))
+        plt.plot(time, data)
+        for onset in final_onsets:
+            onset_time = onset * time_slot_width
+            plt.axvline(x=onset_time, color='red', linestyle='--', label='Onset' if onset == onsets[0] else "")
+        plt.title('ONSET DETECTION')
+        plt.show()
+
     return np.array(final_onsets)
 
-def plot_onsets(time, data, onsets, time_slot_width):
-    plt.figure(figsize = (15, 3))
-    plt.plot(time, data)
-    for onset in onsets:
-        onset_time = onset * time_slot_width
-        plt.axvline(x=onset_time, color='red', linestyle='--', label='Onset' if onset == onsets[0] else "")
-    plt.title('ONSET DETECTION')
-    plt.show()
+# def plot_onsets(time, data, onsets, time_slot_width):
+#     plt.figure(figsize = (15, 3))
+#     plt.plot(time, data)
+#     for onset in onsets:
+#         onset_time = onset * time_slot_width
+#         plt.axvline(x=onset_time, color='red', linestyle='--', label='Onset' if onset == onsets[0] else "")
+#     plt.title('ONSET DETECTION')
+#     plt.show()
