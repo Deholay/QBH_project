@@ -74,11 +74,8 @@ def calculate_midi_differences(pitch_results):
     
     # Calculate the differences between consecutive MIDI numbers
     midi_differences = np.diff(midi_numbers)
-    
-    # Print MIDI differences
-    print("MIDI Differences:", midi_differences)
-    
-    return midi_differences
+
+    return midi_numbers, midi_differences
 
 # Calculate beat intervals
 def calculate_beat_intervals(onsets, time_slot_width):
@@ -90,9 +87,6 @@ def calculate_beat_intervals(onsets, time_slot_width):
     
     # Calculate beat for each interval
     beats = [2 ** np.round(np.log2(interval / b0)) for interval in intervals]
-    
-    # Print beat intervals
-    print("Beat Intervals:", beats)
     
     return beats
 
