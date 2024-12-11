@@ -1,6 +1,7 @@
 import OnsetDetection
 import PitchEstimation
 import PrintInfo
+import EditDistance
 
 # file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/10/lugo_愛你一萬年.wav'
 # file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/15/15lugo_自由.wav'
@@ -17,10 +18,10 @@ threshold = 4.5
 # ---------------------ONSETDETCTION---------------------
 onsets, filtered_signal = OnsetDetection.Onset_Detection(data, rate, time_slot_width, rho, laMbda, threshold)
 onsets = OnsetDetection.refine_onsets(onsets, data, rate, time_slot_width, min_interval=0.15, 
-                                      start_offset=0.2, end_offset=0.2, PLOT_ONSET = True)
+                                      start_offset=0.2, end_offset=0.2, PLOT_ONSET = False)
 
 # ---------------------PITCHESTIMATION-------------------
-fft_results, pitch_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width, L = 10, PLOT_PITCH = True)
+fft_results, pitch_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width, L = 10, PLOT_PITCH = False)
 
 midi_numbers, midi_differences = PitchEstimation.calculate_midi_differences(pitch_results)
 beats = PitchEstimation.calculate_beat_intervals(onsets, time_slot_width)
@@ -31,4 +32,15 @@ beats = PitchEstimation.calculate_beat_intervals(onsets, time_slot_width)
 
 # ---------------------INFO PRINT------------------------
 
-# PrintInfo.print_song_info(song_name, midi_numbers, beats)
+PrintInfo.print_song_info(song_name, midi_numbers, beats)
+
+# ---------------------EDIT DISTANCE---------------------
+
+query_diff = [0, 6, 1, 2, -2]
+target_diff = [0, 7, 0, 2, 0, -2]
+d = 5                                   #如何取?
+
+edit_distance, D_matrix = EditDistance.calculate_edit_distance(d, query_diff, target_diff)
+
+print("Edit Distance:", edit_distance)
+print("Dynamic Programming Matrix (D):\n", D_matrix)
