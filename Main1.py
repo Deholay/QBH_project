@@ -1,4 +1,3 @@
-import numpy as np
 import OnsetDetection
 import PitchEstimation
 import Helper
@@ -63,7 +62,6 @@ def find_closest_song(query_dir, target_file):
     
     return results
 
-# Example usage
 # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/10"
 # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/15"
 query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20"
