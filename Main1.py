@@ -37,13 +37,15 @@ def process_audio_to_query_diff(audio_file):
     _, query_diff = PitchEstimation.calculate_midi_differences(pitch_results)
     return query_diff
 
-# Main process
 def find_closest_song(query_dir, target_file):
     """
     Find the closest song for each query audio file by calculating edit distance.
+    Calculate the accuracy based on correct matches.
     """
     targets = load_target_data(target_file)
     results = []
+    correct_count = 0  # Counter for correct matches
+    total_count = 0    # Counter for total files
 
     for audio_file in os.listdir(query_dir):
         if audio_file.endswith('.wav'):  # Adjust file extension as needed
@@ -58,13 +60,24 @@ def find_closest_song(query_dir, target_file):
                     best_distance = distance
                     best_match = song_name
 
+            # Check if the predicted best match is correct
+            audio_name = os.path.splitext(audio_file)[0].split("_")[1]
+            if audio_name == best_match:
+                correct_count += 1
+
             results.append((audio_file, best_match, best_distance))
-    
+            total_count += 1
+
+    # Calculate accuracy
+    accuracy = correct_count / total_count if total_count > 0 else 0
+
+    print(f"Accuracy: {accuracy:.2%}")
     return results
 
-# query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/10"
+
+query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/10"
 # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/15"
-query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20"
+# query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20"
 target_file = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/Target_tempo_50_utf-8.txt"
 
 results = find_closest_song(query_dir, target_file)
