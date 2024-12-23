@@ -1,12 +1,10 @@
 import OnsetDetection
 import PitchEstimation
-import PrintInfo
-import EditDistance
+import Helper
 
-# file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/10/lugo_愛你一萬年.wav'
-# file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/15/15lugo_自由.wav'
-# file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/15/15bow_情非得已.wav'
-file_path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/thesis/hummingdata/20/20lugo_挪威的森林.wav'
+file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/15/15lugo_一閃一閃亮晶晶.wav"
+simplified_notation = "115566544332215544332554433211556654433221"
+
 song_name = file_path.split('_')[-1].split('.')[0]
 
 data, rate, time = OnsetDetection.load_audio(file_path)
@@ -23,24 +21,16 @@ onsets = OnsetDetection.refine_onsets(onsets, data, rate, time_slot_width, min_i
 # ---------------------PITCHESTIMATION-------------------
 fft_results, pitch_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width, L = 10, PLOT_PITCH = False)
 
-midi_numbers, midi_differences = PitchEstimation.calculate_midi_differences(pitch_results)
 beats = PitchEstimation.calculate_beat_intervals(onsets, time_slot_width)
+query_midi, query_diff = PitchEstimation.calculate_midi_differences(pitch_results)
 
+# ---------------------EDITDISTANCE----------------------
 
-# midi ex. [42, 42, 42, 40, 40, 40, 40, 37, 42, 42, 42, 41, 40, 40, 40, 37
-# , 42, 42, 42, 40, 40, 37, 35, 35, 37, 37, 35, 37, 42, 42, 40, 40, 40, 37, 42, 41, 42, 40, 40]
-
-# ---------------------INFO PRINT------------------------
-
-PrintInfo.print_song_info(song_name, midi_numbers, beats)
-
-# ---------------------EDIT DISTANCE---------------------
-
-query_diff = [0, 6, 1, 2, -2]
-target_diff = [0, 7, 0, 2, 0, -2]
-d = 5                                   #如何取?
-
-edit_distance, D_matrix = EditDistance.calculate_edit_distance(d, query_diff, target_diff)
+target_midi, target_diff = Helper.simplified_notation_to_midi(simplified_notation)
+edit_distance, D_matrix = Helper.calculate_edit_distance(query_diff, target_diff, d = 5)
 
 print("Edit Distance:", edit_distance)
 print("Dynamic Programming Matrix (D):\n", D_matrix)
+
+#Run Humming data and compare to Target tempo
+#Find Edit Distance least ones

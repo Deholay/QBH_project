@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.fft import fft
 import matplotlib.pyplot as plt
+from scipy.fft import fft
 from scipy.signal import convolve
 
 def create_smoother(L):
