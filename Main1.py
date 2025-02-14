@@ -1,6 +1,6 @@
 import OnsetDetection
 import PitchEstimation
-import Helper
+import MelodyMatching
 import os
 
 # Load the target data
@@ -14,7 +14,7 @@ def load_target_data(file_path):
             parts = line.strip().split()  # Split into song name, simplified notation, and beats
             song_name = parts[0]
             simplified_notation = parts[1].split('/')[0]
-            _, target_diff = Helper.simplified_notation_to_midi(simplified_notation)
+            _, target_diff = MelodyMatching.simplified_notation_to_midi(simplified_notation)
             targets[song_name] = target_diff
     return targets
 
@@ -55,7 +55,7 @@ def find_closest_song(query_dir, target_file):
             best_distance = float('inf')
 
             for song_name, target_diff in targets.items():
-                distance, D = Helper.calculate_edit_distance(query_diff, target_diff, d=5)
+                distance, D = MelodyMatching.calculate_edit_distance(query_diff, target_diff, d=5)
                 if distance < best_distance:
                     best_distance = distance
                     best_match = song_name
@@ -84,3 +84,6 @@ results = find_closest_song(query_dir, target_file)
 
 for audio_file, best_match, distance in results:
     print(f"Audio File: {audio_file}, Best Match: {best_match}, Edit Distance: {distance}")
+
+
+#教授推甄跟考試的名額

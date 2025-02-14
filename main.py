@@ -1,9 +1,9 @@
 import OnsetDetection
 import PitchEstimation
-import Helper
+import MelodyMatching
 
-file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/15/15lugo_一閃一閃亮晶晶.wav"
-simplified_notation = "115566544332215544332554433211556654433221"
+file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_一閃一閃亮晶晶.wav"
+simplified_notation = "11235535567HH5HH6536532123565321"
 
 song_name = file_path.split('_')[-1].split('.')[0]
 
@@ -16,7 +16,7 @@ threshold = 4.5
 # ---------------------ONSETDETCTION---------------------
 onsets, filtered_signal = OnsetDetection.Onset_Detection(data, rate, time_slot_width, rho, laMbda, threshold)
 onsets = OnsetDetection.refine_onsets(onsets, data, rate, time_slot_width, min_interval=0.15, 
-                                      start_offset=0.2, end_offset=0.2, PLOT_ONSET = False)
+                                      start_offset=0.2, end_offset=0.2, PLOT_ONSET = True)
 
 # ---------------------PITCHESTIMATION-------------------
 fft_results, pitch_results = PitchEstimation.fft_between_onsets(data, rate, onsets, time_slot_width, L = 10, PLOT_PITCH = False)
@@ -26,8 +26,8 @@ query_midi, query_diff = PitchEstimation.calculate_midi_differences(pitch_result
 
 # ---------------------EDITDISTANCE----------------------
 
-target_midi, target_diff = Helper.simplified_notation_to_midi(simplified_notation)
-edit_distance, D_matrix = Helper.calculate_edit_distance(query_diff, target_diff, d = 5)
+target_midi, target_diff = MelodyMatching.simplified_notation_to_midi(simplified_notation)
+edit_distance, D_matrix = MelodyMatching.calculate_edit_distance(query_diff, target_diff, d = 5)
 
 print("Edit Distance:", edit_distance)
 print("Dynamic Programming Matrix (D):\n", D_matrix)
