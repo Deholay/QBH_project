@@ -67,8 +67,6 @@ def simplified_notation_to_midi(simplified_notation):
 
 def print_song_info(song_name, midi_numbers, beats):
 
-
-
     # Convert MIDI numbers to simplified notation
     simplified_notation = midi_to_simplified_notation(midi_numbers)
     notation_str = ''.join([str(notation) for notation in simplified_notation])

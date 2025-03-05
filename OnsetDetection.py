@@ -14,25 +14,25 @@ def load_audio(file_path):
 
 def Onset_Detection(data, rate, time_slot_width, rho = 0.02, laMbda = 0.7, threshold = 4.5):
 
-    # -------------Step1. find envelope amplitude-----------------------------------------
+    """ -------------Step1. find envelope amplitude----------------------------------------- """
     n0 = int(time_slot_width * rate)
     envelope_amplitude = np.abs(data[:len(data) // n0 * n0].reshape(-1, n0)).mean(axis=1)
 
-    # -------------Step2. Reduce the effect of the background noise-----------------------
+    """ -------------Step2. Reduce the effect of the background noise----------------------- """
     reduced_noise_amplitude = np.maximum(envelope_amplitude - rho, 0)
 
-    # -------------Step3. Normalize the envelope amplitude--------------------------------
+    """ -------------Step3. Normalize the envelope amplitude-------------------------------- """
     # 與thesis不同
     normalized_amplitude = reduced_noise_amplitude / (0.2 + 0.1*np.mean(reduced_noise_amplitude))
 
-    # -------------Step4. Take the fractional power of the envelope amplitude-------------
+    """ -------------Step4. Take the fractional power of the envelope amplitude------------- """
     fractional_amplitude = normalized_amplitude ** laMbda
 
-    # -------------Step5. Convolution with the envelope match filter----------------------
+    """ -------------Step5. Convolution with the envelope match filter---------------------- """
     match_filter = [3, 3, 4, 4, -1, -1, -2, -2, -2, -2, -2, -2]
     filtered_signal = convolve(fractional_amplitude, match_filter, mode='same')
 
-    # -------------Step6. Thresholding to find the onsets -> 閾值的選擇問題----------------
+    """ -------------Step6. Thresholding to find the onsets -> 閾值的選擇問題---------------- """
     onsets = np.where(filtered_signal > threshold)[0]
 
     return onsets, filtered_signal

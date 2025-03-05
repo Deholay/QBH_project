@@ -70,7 +70,7 @@ def fft_between_onsets(data, rate, onsets, time_slot_width, L=10, PLOT_PITCH = T
 # Convert pitch to MIDI and calculate MIDI differences
 def calculate_midi_differences(pitch_results):
     # Convert each fundamental frequency to a MIDI note number
-    midi_numbers = [48 + 12 * np.log2(f0 / 261.63) for f0 in pitch_results if f0]
+    midi_numbers = np.ceil([48 + 12 * np.log2(f0 / 261.63) for f0 in pitch_results if f0])      #"Proposed Algorithm" 直接無條件進位
     
     # Calculate the differences between consecutive MIDI numbers
     midi_differences = np.diff(midi_numbers)
