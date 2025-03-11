@@ -65,12 +65,3 @@ def refine_onsets(onsets, data, rate, time_slot_width, min_interval = 0.15, star
         plt.show()
 
     return np.array(final_onsets)
-
-# def plot_onsets(time, data, onsets, time_slot_width):
-#     plt.figure(figsize = (15, 3))
-#     plt.plot(time, data)
-#     for onset in onsets:
-#         onset_time = onset * time_slot_width
-#         plt.axvline(x=onset_time, color='red', linestyle='--', label='Onset' if onset == onsets[0] else "")
-#     plt.title('ONSET DETECTION')
-#     plt.show()

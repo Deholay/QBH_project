@@ -33,14 +33,16 @@ print(query_diff, "/", target_diff)
 
 
 # ---------------------HiddenMarkovModel-----------------
-states, transition_matrix, state_index = HiddenMarkovModel.build_markov_model(target_diff, min_prob=0.05)
+states, transition_matrix, state_index = HiddenMarkovModel.build_markov_model(target_diff, min_prob=0.001)
 score = HiddenMarkovModel.calculate_score(query_diff, transition_matrix, state_index)
 
-print("Edit Distance:", edit_distance)
-print("Dynamic Programming Matrix (D):\n", D_matrix)
+# print("Edit Distance:", edit_distance)
+# print("Dynamic Programming Matrix (D):\n", D_matrix)
 #Run Humming data and compare to Target tempo
 #Find Edit Distance least ones
 
 print("HMM score: ", score)
-#Fix: Some difference is not in Markov Model 方法很笨，直接使用min_prob會有問題，待解決
+print("states: ", states)
+print("state_index: ", state_index)
+print("matrix: \n", transition_matrix)
 #Needs: Some Proposed Algorithm
