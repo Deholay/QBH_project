@@ -1,7 +1,7 @@
 import OnsetDetection
 import PitchEstimation
 import MelodyMatching
-import HiddenMarkovModel
+import HMM
 import os
 
 # Load the target data

@@ -1,7 +1,7 @@
 import OnsetDetection
 import PitchEstimation
 import MelodyMatching
-import HiddenMarkovModel
+import HMM
 
 file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_一閃一閃亮晶晶.wav"
 Target_simplified_notation = "115566544332215544332554433211556654433221"
@@ -33,8 +33,8 @@ print(query_diff, "/", target_diff)
 
 
 # ---------------------HiddenMarkovModel-----------------
-states, transition_matrix, state_index = HiddenMarkovModel.build_markov_model(target_diff, min_prob=0.001)
-score = HiddenMarkovModel.calculate_score(query_diff, transition_matrix, state_index)
+states, transition_matrix, state_index = HMM.build_markov_model(target_diff, min_prob=0.001)
+score = HMM.calculate_score(query_diff, transition_matrix, state_index)
 
 # print("Edit Distance:", edit_distance)
 # print("Dynamic Programming Matrix (D):\n", D_matrix)

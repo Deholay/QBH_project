@@ -1,8 +1,30 @@
 import numpy as np
+from scipy.signal import convolve2d
 
-def apply_diffusion(transition_counts, diffusion_matrix):
+def apply_diffusion_by_conv(transition_counts, diffusion_matrix):
     """
-    對 transition_counts 應用 diffusion kernel。
+    對 transition_counts 應用 diffusion kernel, 並考慮每個 entry 在自己 column 中的權重比例。
+    
+    參數:
+        - transition_counts: numpy.ndarray, 原始轉移次數矩陣
+        - diffusion_matrix: numpy.ndarray, 擴散矩陣 (必須為方陣)
+    
+    回傳:
+        - numpy.ndarray, 經過擴散處理的轉移次數矩陣
+    """
+    column_sums = np.sum(transition_counts, axis=0, keepdims=True)  # 計算每列總和並保持維度
+    column_sums[column_sums == 0] = 1  # 避免除以 0
+    normalized_counts = transition_counts / column_sums  # 依 column normalize
+
+    # 進行 2D 卷積，使用 'same' 以保持矩陣大小
+    diffused_counts = convolve2d(normalized_counts, diffusion_matrix, mode='same', boundary='fill', fillvalue=0)
+
+    return diffused_counts
+
+
+def apply_diffusion_by_mult(transition_counts, diffusion_matrix):
+    """
+    對 transition_counts 應用 diffusion kernel，並考慮每個 entry 在自己 column 中的權重比例。
     
     參數:
         - transition_counts: numpy.ndarray, 原始轉移次數矩陣
@@ -15,23 +37,31 @@ def apply_diffusion(transition_counts, diffusion_matrix):
     k = diffusion_matrix.shape[0]  # Kernel 大小
     k_half = k // 2  # Kernel 半徑
 
+    column_sums = np.sum(transition_counts, axis=0)  # 計算每個 column 的總和
     new_counts = np.zeros_like(transition_counts, dtype=float)
 
-    for i in range(n):
-        for j in range(n):
+    for j in range(n):
+        if column_sums[j] == 0:  # 避免除以 0
+            continue
+        
+        for i in range(n):
             if transition_counts[i, j] > 0:
-                # 套用 diffusion matrix (需處理邊界情況)
+                # 計算該 entry 在 column 內的比例
+                normalized_weight = transition_counts[i, j] / column_sums[j]
+                
+                # 套用 diffusion matrix
                 for di in range(-k_half, k_half + 1):
                     for dj in range(-k_half, k_half + 1):
                         ni, nj = i + di, j + dj
                         if 0 <= ni < n and 0 <= nj < n:
-                            new_counts[ni, nj] += transition_counts[i, j] * diffusion_matrix[di + k_half, dj + k_half]
-    
+                            new_counts[ni, nj] += normalized_weight * diffusion_matrix[di + k_half, dj + k_half] * column_sums[j]  # 重新放大
+
     return new_counts
 
 def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
     """
-    建立 Markov Model 的轉移機率矩陣，應用 diffusion kernel, 並確保 state 範圍涵蓋指定區間。
+    建立 Markov Model 的轉移機率矩陣，應用 diffusion kernel, 並確保 state 範圍涵蓋指定區間, 
+    考慮每個 entry 在自己 column 中的權重比例。
     
     參數:
         - target_diff: list[int]，目標歌曲的 MIDI difference
@@ -57,7 +87,9 @@ def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
         if s in state_index and s_next in state_index:
             transition_counts[state_index[s_next], state_index[s]] += 1
 
-    # 定義 diffusion matrix（根據附圖）
+    # print(np.round(transition_counts, decimals=4)) # [Debug]
+
+    # 定義 diffusion matrix
     diffusion_matrix = np.array([
         [0.0062, 0.0166, 0.0332, 0.0166, 0.0062],
         [0.0166, 0.0443, 0.0886, 0.0443, 0.0166],
@@ -67,8 +99,12 @@ def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
     ])
 
     # 套用 diffusion kernel
-    transition_matrix = apply_diffusion(transition_counts, diffusion_matrix)
-
+    transition_matrix = apply_diffusion_by_conv(transition_counts, diffusion_matrix)
+    # 正規化
+    # transition_matrix /= transition_matrix.sum(axis=0, keepdims=True)
+    column_sums = np.sum(transition_matrix, axis=0, keepdims=True)  # 計算每列總和並保持維度
+    column_sums[column_sums == 0] = 1  # 避免除以 0
+    transition_matrix = transition_matrix / column_sums  # 依 column normalize
     # 設置最小機率 P_m
     transition_matrix[transition_matrix == 0] = min_prob
 
@@ -102,15 +138,15 @@ def calculate_score(query_diff, transition_matrix, state_index, min_prob=0.001):
 
 
 
-# # 設定 target MIDI 數據，建立 HMM
-# target_midi_numbers = [60, 62, 64, 60, 62, 67, 69, 67, 64, 60]
-# states, transition_matrix, state_index = build_markov_model(target_midi_numbers)
-# # print(state_index[60])
+# 設定 target MIDI 數據，建立 HMM
+# target_midi_numbers = [0, 7, 0, 2, 0, -2, -2, 0, -1, 0, -2, 0, -2]
+# states, transition_matrix, state_index = build_markov_model(target_midi_numbers, min_prob=0.001, state_range=(-2, 7))
+# print(state_index[60])
+# print(np.round(transition_matrix, decimals=4))
 
-
-# # 設定 query MIDI 數據
+# 設定 query MIDI 數據
 # query_diff = [60, 62, 67, 64]
 
-# # 計算 score_H
+# 計算 score_H
 # score = calculate_score(query_diff, transition_matrix, state_index)
-# # print("Score_H:", score)
+# print("Score_H:", score)
