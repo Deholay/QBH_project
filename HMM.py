@@ -21,7 +21,6 @@ def apply_diffusion_by_conv(transition_counts, diffusion_matrix):
 
     return diffused_counts
 
-
 def apply_diffusion_by_mult(transition_counts, diffusion_matrix):
     """
     對 transition_counts 應用 diffusion kernel，並考慮每個 entry 在自己 column 中的權重比例。
@@ -74,7 +73,7 @@ def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
         - state_index: dict, MIDI Number -> Matrix Index 的映射
     """
     # 確保 state 範圍完整
-    states = list(range(state_range[0], state_range[1] + 1))
+    states = list(range(state_range[0], state_range[1] + 1))        # Range is -11 ~ 11
     state_index = {midi: i for i, midi in enumerate(states)}
     n = len(states)
 
@@ -110,29 +109,27 @@ def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
 
     return states, transition_matrix, state_index
 
-
-def get_transition_probability(transition_matrix, state_index, s, s_next, min_prob=0.001):
+def get_transition_probability(transition_matrix, s, s_next, min_prob=0.001, state_range=(-11, 11)):
     """
     :param transition_matrix: 已建構的轉移機率矩陣
-    :param state_index: 狀態索引對應表
     :param s: 當前狀態 (MIDI diff)
     :param s_next: 下一個狀態 (MIDI diff)
     :param min_prob: 預設最小機率
     :return: P(s' | s)
     """
-    if s not in state_index or s_next not in state_index:
+    if (s < state_range[0] or s > state_range[1]) or (s_next < state_range[0] or s_next > state_range[1]):
         return min_prob  # 若狀態不在模型中，則直接回傳 min_prob
-    i, j = state_index[s], state_index[s_next]
+    i, j = int(s + abs(state_range[0])), int(s_next + abs(state_range[0]))
     return transition_matrix[i, j]
 
-def calculate_score(query_diff, transition_matrix, state_index, min_prob=0.001):
+def calculate_score(query_diff, transition_matrix):
     """
     根據 HMM 計算 query 的匹配分數 score_H
     """
     score = 1.0
     for i in range(len(query_diff) - 1):
         s, s_next = query_diff[i], query_diff[i+1]
-        score *= get_transition_probability(transition_matrix, state_index, s, s_next, min_prob)
+        score *= get_transition_probability(transition_matrix, s, s_next)
     
     return score
 
@@ -143,12 +140,15 @@ if __name__ == "__main__":
 
     # 設定 target MIDI 數據，建立 HMM
     target_diff = [0, 7, 0, 2, 0, -2, -2, 0, -1, 0, -2, 0, -2]
-    states, transition_matrix, state_index = build_markov_model(target_diff, min_prob=0.001, state_range=(-2, 7))
+    states, transition_matrix, state_index = build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11))
+    print("States:", states)
+    print("State Index:", state_index)
+    print(get_transition_probability(transition_matrix, 0, 2))
     print(np.round(transition_matrix, decimals=4))
 
     # 設定 query MIDI 數據
     query_diff = [0, 0, 2, 0, -2, -2, -1, -1, 0, -2, 0, -2]
 
     # 計算 score_H
-    score = calculate_score(query_diff, transition_matrix, state_index)
+    score = calculate_score(query_diff, transition_matrix)
     print("Score_H:", score)

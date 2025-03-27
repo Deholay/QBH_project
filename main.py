@@ -1,7 +1,6 @@
 import OnsetDetection
 import PitchEstimation
 import MelodyMatching
-import HMM
 import DP
 import os
 
@@ -51,8 +50,8 @@ def find_closest_song(query_dir, target_file):
 
     for audio_file in os.listdir(query_dir):
         if audio_file.endswith('.wav'):  # Adjust file extension as needed
-            file_path = os.path.join(query_dir, audio_file)
-            query_diff = process_audio_to_query_diff(file_path)
+            file_path = os.path.join(query_dir, audio_file) # Convert to full path
+            query_diff = process_audio_to_query_diff(file_path) 
             best_match = None
             best_distance = float('inf')
 

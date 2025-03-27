@@ -84,6 +84,44 @@ def find_best_path(D):
 
     return path
 
+def calculate_matching_without_beat_score(D_Pitch, Pitch_Path, w_b=0.8):
+    """
+    計算音高和節奏的匹配分數
+    
+    參數:
+        D (numpy.ndarray): DP 矩陣
+        Pitch_Path (list[tuple]): 最佳匹配路徑 (i, j) 座標列表
+        Beat_Path (list[tuple]): 最佳匹配路徑 (i, j) 座標列表
+        w_b (float): 節奏權重(預設 0.8)
+    
+    回傳:
+        float: 綜合匹配分數
+    """
+    
+    # 根據 Pitch_Path 抓取 D 中的元素並進行運算
+    P = []
+    current_row = -1
+    row_sum = 0
+    for (i, j) in Pitch_Path:
+        if i != current_row:
+            if current_row != -1:
+                P.append(row_sum)
+            current_row = i
+            row_sum = D_Pitch[i, j]
+        else:
+            row_sum += D_Pitch[i, j]
+    P.append(row_sum)  # 添加最後一行的和
+
+    # 轉換為 numpy array 提高計算效率
+    P = np.array(P, dtype=np.float32)
+    
+    # 計算指數項的總和
+    sum_pitch = np.sum(np.exp(-P))
+    
+    # 加權計算最終分數
+    total_score = sum_pitch + w_b * 0
+    return total_score
+
 def calculate_matching_score(D_Pitch, D_Beat, Pitch_Path, Beat_Path, w_b=0.8):
     """
     計算音高和節奏的匹配分數
