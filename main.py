@@ -2,6 +2,7 @@ import OnsetDetection
 import PitchEstimation
 import MelodyMatching
 import HMM
+import DP
 import os
 
 # Load the target data
@@ -56,7 +57,7 @@ def find_closest_song(query_dir, target_file):
             best_distance = float('inf')
 
             for song_name, target_diff in targets.items():
-                distance, D = MelodyMatching.calculate_edit_distance(query_diff, target_diff, d=5)
+                distance, D = DP.calculate_edit_distance(query_diff, target_diff, d=5)
                 if distance < best_distance:
                     best_distance = distance
                     best_match = song_name

@@ -138,15 +138,17 @@ def calculate_score(query_diff, transition_matrix, state_index, min_prob=0.001):
 
 
 
-# 設定 target MIDI 數據，建立 HMM
-# target_midi_numbers = [0, 7, 0, 2, 0, -2, -2, 0, -1, 0, -2, 0, -2]
-# states, transition_matrix, state_index = build_markov_model(target_midi_numbers, min_prob=0.001, state_range=(-2, 7))
-# print(state_index[60])
-# print(np.round(transition_matrix, decimals=4))
+# 測試範例
+if __name__ == "__main__":
 
-# 設定 query MIDI 數據
-# query_diff = [60, 62, 67, 64]
+    # 設定 target MIDI 數據，建立 HMM
+    target_diff = [0, 7, 0, 2, 0, -2, -2, 0, -1, 0, -2, 0, -2]
+    states, transition_matrix, state_index = build_markov_model(target_diff, min_prob=0.001, state_range=(-2, 7))
+    print(np.round(transition_matrix, decimals=4))
 
-# 計算 score_H
-# score = calculate_score(query_diff, transition_matrix, state_index)
-# print("Score_H:", score)
+    # 設定 query MIDI 數據
+    query_diff = [0, 0, 2, 0, -2, -2, -1, -1, 0, -2, 0, -2]
+
+    # 計算 score_H
+    score = calculate_score(query_diff, transition_matrix, state_index)
+    print("Score_H:", score)

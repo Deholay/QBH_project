@@ -18,20 +18,24 @@ def rw_and_build_markov_model(file_path):
 
     return targets_hmms
 
-# 執行批量轉換
-target_file = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/Target_tempo_50_utf-8.txt"
-hmms = rw_and_build_markov_model(target_file)
 
-# 寫入檔案(txt)
-path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/HMM_midi_diff/HMM_midi_diff.txt'
-file = open(path, 'w', encoding='utf-8')
-for song, model in hmms.items():
-    file.write(f"Song Name: {song}\nHMM Model:\n{model}\n")
-file.close()
 
-# 寫入檔案(csv)
-for song, model in hmms.items():
-    song_string_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/HMM_midi_diff/" + str(song) + ".csv"
-    with open(song_string_path,"w+") as my_csv:
-        newarray = csv.writer(my_csv,delimiter=',')
-        newarray.writerows(model)
+if __name__ == "__main__":
+
+    # 執行批量轉換
+    target_file = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/Target_tempo_50_utf-8.txt"
+    hmms = rw_and_build_markov_model(target_file)
+
+    # 寫入檔案(txt)
+    path = 'C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/HMM_midi_diff/HMM_midi_diff.txt'
+    file = open(path, 'w', encoding='utf-8')
+    for song, model in hmms.items():
+        file.write(f"Song Name: {song}\nHMM Model:\n{model}\n")
+    file.close()
+
+    # 寫入檔案(csv)
+    for song, model in hmms.items():
+        song_string_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/HMM_midi_diff/" + str(song) + ".csv"
+        with open(song_string_path,"w+") as my_csv:
+            newarray = csv.writer(my_csv,delimiter=',')
+            newarray.writerows(model)

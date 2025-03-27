@@ -89,26 +89,3 @@ def calculate_beat_intervals(onsets, time_slot_width):
     beats = [2 ** np.round(np.log2(interval / b0)) for interval in intervals]
     
     return beats
-
-
-# def plot_pitch(fft_results, pitch_results):
-#     num_segments = len(fft_results)
-#     fig, axes = plt.subplots(num_segments, 1, figsize=(10, 5 * num_segments))
-
-#     # Plot each segment's FFT result in a separate subplot
-#     for i, (freq_axis, smoothed_fft_result) in enumerate(fft_results):
-#         ax = axes[i] if num_segments > 1 else axes  # Handle single subplot case
-#         ax.plot(freq_axis[:len(freq_axis)//2], smoothed_fft_result[:len(smoothed_fft_result)//2])
-#         ax.set_title(f'Smoothed FFT of Segment between Onset {i} and Onset {i+1}')
-#         # ax.set_xlabel('Frequency (Hz)')
-#         # ax.set_ylabel('Magnitude')
-        
-#         # Plot fundamental frequency if detected
-#         f0 = pitch_results[i]
-#         if f0:
-#             ax.axvline(x=f0, color='red', linestyle='--', label=f'Pitch f0 = {f0:.2f} Hz')
-#             ax.legend()
-
-#     # Adjust layout for better spacing
-#     plt.tight_layout()
-#     plt.show()
