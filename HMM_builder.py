@@ -1,8 +1,9 @@
 import MelodyMatching
 import HMM
 import csv
+import numpy as np
 
-def rw_and_build_markov_model(file_path):
+def rw_and_build_markov_model(file_path, mode="conv"):
     """
     Load target data and convert the simplified notation to MIDI differences.
     """
@@ -13,7 +14,8 @@ def rw_and_build_markov_model(file_path):
             song_name = parts[0]
             simplified_notation = parts[1].split('/')[0]
             _, target_diff = MelodyMatching.simplified_notation_to_midi(simplified_notation)
-            _, hmm_model, _ = HMM.build_markov_model(target_diff)
+            _, hmm_model, _ = HMM.build_markov_model(target_diff, mode, min_prob=0.001, state_range=(-11, 11))
+            # targets_hmms[song_name] = np.round(hmm_model, decimals=4)
             targets_hmms[song_name] = hmm_model
 
     return targets_hmms

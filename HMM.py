@@ -57,7 +57,7 @@ def apply_diffusion_by_mult(transition_counts, diffusion_matrix):
 
     return new_counts
 
-def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
+def build_markov_model(target_diff, mode = "conv", min_prob=0.001, state_range=(-11, 11)):
     """
     建立 Markov Model 的轉移機率矩陣，應用 diffusion kernel, 並確保 state 範圍涵蓋指定區間, 
     考慮每個 entry 在自己 column 中的權重比例。
@@ -98,7 +98,11 @@ def build_markov_model(target_diff, min_prob=0.001, state_range=(-11, 11)):
     ])
 
     # 套用 diffusion kernel
-    transition_matrix = apply_diffusion_by_conv(transition_counts, diffusion_matrix)
+    if mode == "conv":
+        transition_matrix = apply_diffusion_by_conv(transition_counts, diffusion_matrix)
+    elif mode == "mult":
+        transition_matrix = apply_diffusion_by_mult(transition_counts, diffusion_matrix)
+    
     # 正規化
     # transition_matrix /= transition_matrix.sum(axis=0, keepdims=True)
     column_sums = np.sum(transition_matrix, axis=0, keepdims=True)  # 計算每列總和並保持維度
