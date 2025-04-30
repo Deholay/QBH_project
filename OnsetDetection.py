@@ -12,30 +12,47 @@ def load_audio(file_path):
         data = data[:, 0]
     return data, rate, time
 
-def Onset_Detection(data, rate, time_slot_width, rho = 0.02, laMbda = 0.7, threshold = 4.5):
+def Onset_Detection(data, rate, time_slot_width, rho=0.02, laMbda=0.7, k=3.0, use_median=True): # 新增 k 和 use_median 參數
 
-    """ -------------Step1. find envelope amplitude----------------------------------------- """
+    """ -------------Step1-4 不變------------- """
     n0 = int(time_slot_width * rate)
     envelope_amplitude = np.abs(data[:len(data) // n0 * n0].reshape(-1, n0)).mean(axis=1)
-
-    """ -------------Step2. Reduce the effect of the background noise----------------------- """
     reduced_noise_amplitude = np.maximum(envelope_amplitude - rho, 0)
-
-    """ -------------Step3. Normalize the envelope amplitude-------------------------------- """
-    # 與thesis不同
-    normalized_amplitude = reduced_noise_amplitude / (0.2 + 0.1*np.mean(reduced_noise_amplitude))
-
-    """ -------------Step4. Take the fractional power of the envelope amplitude------------- """
+    # --- 稍微調整正規化，避免除以零或過小值 ---
+    mean_reduced = np.mean(reduced_noise_amplitude)
+    normalized_amplitude = reduced_noise_amplitude / (mean_reduced + 1e-6) # 添加小常數避免除零
+    # --------------------------------------
     fractional_amplitude = normalized_amplitude ** laMbda
 
-    """ -------------Step5. Convolution with the envelope match filter---------------------- """
+    """ -------------Step5. Convolution------------- """
     match_filter = [3, 3, 4, 4, -1, -1, -2, -2, -2, -2, -2, -2]
     filtered_signal = convolve(fractional_amplitude, match_filter, mode='same')
 
-    """ -------------Step6. Thresholding to find the onsets -> 閾值的選擇問題---------------- """
-    onsets = np.where(filtered_signal > threshold)[0]
+    """ -------------Step6. 動態閾值計算與應用------------- """
+    if use_median:
+        # 使用 Median + k * MAD
+        median_val = np.median(filtered_signal)
+        # 計算 MAD (注意：有些庫可能有內建 MAD 函數，這裡手動計算)
+        mad_val = np.median(np.abs(filtered_signal - median_val))
+        dynamic_threshold = median_val + k * mad_val
+        # --- 確保閾值至少為一個小的正數，避免 < 0 ---
+        dynamic_threshold = max(dynamic_threshold, 1e-3)
+        # -----------------------------------------
+        print(f"Dynamic Threshold (Median+MAD, k={k}): {dynamic_threshold}") # 方便觀察
+    else:
+        # 使用 Mean + k * Std Dev
+        mean_val = np.mean(filtered_signal)
+        std_val = np.std(filtered_signal)
+        dynamic_threshold = mean_val + k * std_val
+         # --- 確保閾值至少為一個小的正數 ---
+        dynamic_threshold = max(dynamic_threshold, 1e-3)
+        # -----------------------------------
+        print(f"Dynamic Threshold (Mean+StdDev, k={k}): {dynamic_threshold}") # 方便觀察
 
-    return onsets, filtered_signal
+    onsets = np.where(filtered_signal > dynamic_threshold)[0]
+    # -------------------------------------------------
+
+    return onsets, filtered_signal # 返回 filtered_signal 可能有助於除錯
 
 
 def refine_onsets(onsets, data, rate, time_slot_width, min_interval = 0.15, start_offset = 0.2, end_offset = 0.2, PLOT_ONSET = True):

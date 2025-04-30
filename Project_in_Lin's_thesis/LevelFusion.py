@@ -3,6 +3,7 @@ import PitchEstimation
 import MelodyMatching
 import HMM
 import MDP
+import DP
 import os
 
 # Load the target data
@@ -97,7 +98,8 @@ def HMM_DP_find_closest_songs(query_path, target_file, transition_matrix_folder)
             # 計算 DP 匹配
             D_Pitch = MDP.compute_dp_matrix(query_diff, target_diff)  
             best_pitch_path = MDP.find_best_path(D_Pitch)
-            DP_Score = MDP.calculate_matching_without_beat_score(D_Pitch, best_pitch_path)
+            DP_Score = MDP.calculate_matching_without_beat_score(D_Pitch, best_pitch_path) # 使用 MDP 計算的分數
+            # DP_Score, _ = DP.calculate_edit_distance(query_diff, target_diff, d=5)  # 使用編輯距離作為 DP 分數
             
             # 綜合 HMM 與 DP 分數
             final_score = 0.2 * normalized_hmm_scores[song_name] + 0.8 * DP_Score
