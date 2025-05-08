@@ -4,7 +4,7 @@ import MelodyMatching
 import HMM
 import DP
 
-file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_愛你一萬年.wav"
+file_path = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_對面的女孩看過來.wav"
 Target_simplified_notation = "115566544332215544332554433211556654433221"
 
 song_name = file_path.split('_')[-1].split('.')[0]

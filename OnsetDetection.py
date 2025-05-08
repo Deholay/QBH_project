@@ -40,14 +40,7 @@ def Onset_Detection(data, rate, time_slot_width, rho=0.02, laMbda=0.7, k=3.0, us
         # -----------------------------------------
         print(f"Dynamic Threshold (Median+MAD, k={k}): {dynamic_threshold}") # 方便觀察
     else:
-        # 使用 Mean + k * Std Dev
-        mean_val = np.mean(filtered_signal)
-        std_val = np.std(filtered_signal)
-        dynamic_threshold = mean_val + k * std_val
-         # --- 確保閾值至少為一個小的正數 ---
-        dynamic_threshold = max(dynamic_threshold, 1e-3)
-        # -----------------------------------
-        print(f"Dynamic Threshold (Mean+StdDev, k={k}): {dynamic_threshold}") # 方便觀察
+        dynamic_threshold = 4.5
 
     onsets = np.where(filtered_signal > dynamic_threshold)[0]
     # -------------------------------------------------
