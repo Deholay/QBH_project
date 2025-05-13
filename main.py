@@ -101,7 +101,7 @@ def find_closest_song(query_dir, target_file):
 
                 distanceB, D = DP.calculate_edit_distance(query_beat, target_beat, d=3)  # Cost 3 is the best
 
-                score = 0.95 * distanceD + 0.0125 * distanceB - 0.0375 * np.log(hmm_score)
+                score = 0.95 * distanceD + 0.0125 * distanceB + 0.0375 * np.log(hmm_score)
                 if score < best_score:
                     best_score = score
                     best_match = song_name
@@ -123,9 +123,9 @@ def find_closest_song(query_dir, target_file):
 
 
 if __name__ == "__main__":
-    query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/10"
+    # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/10"
     # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/15"
-    # query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20"
+    query_dir = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20"
     transition_matrix_folder = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/Project_in_Lin's_thesis/HMM_midi_diff"
     target_file = "C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/Target_tempo_50_utf-8.txt"
 

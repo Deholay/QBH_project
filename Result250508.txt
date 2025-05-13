@@ -122,46 +122,46 @@ Audio File: 15torin_當我們同在一起.wav, Best Match: 當我們同在一起
 Audio File: 15torin_蝴蝶.wav, Best Match: 蝴蝶, Score: 20.43
 Audio File: 15torin_記得.wav, Best Match: 記得, Score: 21.63
 --------------------------Now, Final Results in C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20 is--------------------------
-Accuracy: 83.33%
-Audio File: 20lugo_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 5.99
-Audio File: 20lugo_兩隻老虎.wav, Best Match: 兩隻老虎, Score: 19.96
-Audio File: 20lugo_分享.wav, Best Match: 分享, Score: 47.85
-Audio File: 20lugo_分手吧.wav, Best Match: 分手吧, Score: 30.22
-Audio File: 20lugo_好不好.wav, Best Match: 好不好, Score: 36.06
-Audio File: 20lugo_妹妹背著洋娃娃.wav, Best Match: 妹妹背著洋娃娃, Score: 30.75
-Audio File: 20lugo_對面的女孩看過來.wav, Best Match: 對面的女孩看過來, Score: 52.33
-Audio File: 20lugo_志明與春嬌.wav, Best Match: 志明與春嬌, Score: 34.84
-Audio File: 20lugo_愛你一萬年.wav, Best Match: 千里之外, Score: 56.78
-Audio File: 20lugo_愛情釀的酒.wav, Best Match: 愛情釀的酒, Score: 41.09
-Audio File: 20lugo_挪威的森林.wav, Best Match: 挪威的森林, Score: 23.86
-Audio File: 20lugo_擁抱.wav, Best Match: 無情的情書, Score: 56.10
-Audio File: 20lugo_新不了情.wav, Best Match: 新不了情, Score: 20.49
-Audio File: 20lugo_朋友.wav, Best Match: 朋友, Score: 23.85
-Audio File: 20lugo_浪人情歌.wav, Best Match: 浪人情歌, Score: 15.97
-Audio File: 20lugo_溫柔.wav, Best Match: 溫柔, Score: 48.63
-Audio File: 20lugo_火車快飛.wav, Best Match: 猜不透, Score: 56.45
-Audio File: 20lugo_用心良苦.wav, Best Match: 用心良苦, Score: 57.68
-Audio File: 20lugo_痛哭的人.wav, Best Match: 愛上你的一切, Score: 40.87
-Audio File: 20lugo_約定.wav, Best Match: 勇氣, Score: 47.27
-Audio File: 20lugo_自由.wav, Best Match: 自由, Score: 42.33
-Audio File: 20lugo_至少還有你.wav, Best Match: 對面的女孩看過來, Score: 59.03
-Audio File: 20lugo_花心.wav, Best Match: 花心, Score: 59.65
-Audio File: 20lugo_被動.wav, Best Match: 被動, Score: 59.24
-Audio File: 20lugo_還是會寂寞.wav, Best Match: 還是會寂寞, Score: 67.09
-Audio File: 20lugo_靜止.wav, Best Match: 千里之外, Score: 81.62
-Audio File: 20torin_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 38.25
-Audio File: 20torin_倒帶.wav, Best Match: 倒帶, Score: 37.34
-Audio File: 20torin_凍結.wav, Best Match: 凍結, Score: 46.51
-Audio File: 20torin_娃娃國.wav, Best Match: 娃娃國, Score: 38.52
-Audio File: 20torin_家.wav, Best Match: 家, Score: 19.69
-Audio File: 20torin_小手拉大手.wav, Best Match: 小手拉大手, Score: 43.76
-Audio File: 20torin_小毛驢.wav, Best Match: 小毛驢, Score: 53.10
-Audio File: 20torin_小白花.wav, Best Match: 小白花, Score: 28.83
-Audio File: 20torin_小蜜蜂.wav, Best Match: 小蜜蜂, Score: 35.18
-Audio File: 20torin_愛笑的眼睛.wav, Best Match: 愛笑的眼睛, Score: 54.15
-Audio File: 20torin_溫柔.wav, Best Match: 溫柔, Score: 29.61
-Audio File: 20torin_當你.wav, Best Match: 當你, Score: 37.83
-Audio File: 20torin_當我們同在一起.wav, Best Match: 當我們同在一起, Score: 10.89
-Audio File: 20torin_蝴蝶.wav, Best Match: 蝴蝶, Score: 27.11
-Audio File: 20torin_記得.wav, Best Match: 記得, Score: 37.14
-Audio File: torin_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 38.25
+Accuracy: 85.71%
+Audio File: 20lugo_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 1.71
+Audio File: 20lugo_兩隻老虎.wav, Best Match: 兩隻老虎, Score: 13.24
+Audio File: 20lugo_分享.wav, Best Match: 分享, Score: 36.85
+Audio File: 20lugo_分手吧.wav, Best Match: 分手吧, Score: 24.11
+Audio File: 20lugo_好不好.wav, Best Match: 好不好, Score: 28.07
+Audio File: 20lugo_妹妹背著洋娃娃.wav, Best Match: 妹妹背著洋娃娃, Score: 25.27
+Audio File: 20lugo_對面的女孩看過來.wav, Best Match: 對面的女孩看過來, Score: 43.39
+Audio File: 20lugo_志明與春嬌.wav, Best Match: 志明與春嬌, Score: 28.71
+Audio File: 20lugo_愛你一萬年.wav, Best Match: 愛你一萬年, Score: 46.63
+Audio File: 20lugo_愛情釀的酒.wav, Best Match: 愛情釀的酒, Score: 33.74
+Audio File: 20lugo_挪威的森林.wav, Best Match: 挪威的森林, Score: 16.94
+Audio File: 20lugo_擁抱.wav, Best Match: 無情的情書, Score: 47.00                   # in Rank10
+Audio File: 20lugo_新不了情.wav, Best Match: 新不了情, Score: 14.51
+Audio File: 20lugo_朋友.wav, Best Match: 朋友, Score: 17.05
+Audio File: 20lugo_浪人情歌.wav, Best Match: 浪人情歌, Score: 9.51
+Audio File: 20lugo_溫柔.wav, Best Match: 溫柔, Score: 39.77
+Audio File: 20lugo_火車快飛.wav, Best Match: 猜不透, Score: 47.02                   # in Rank38
+Audio File: 20lugo_用心良苦.wav, Best Match: 用心良苦, Score: 47.72
+Audio File: 20lugo_痛哭的人.wav, Best Match: 愛上你的一切, Score: 32.28             # in Rank6
+Audio File: 20lugo_約定.wav, Best Match: 潑水歌, Score: 39.55                      # in Rank51
+Audio File: 20lugo_自由.wav, Best Match: 自由, Score: 31.44
+Audio File: 20lugo_至少還有你.wav, Best Match: 對面的女孩看過來, Score: 50.20       # in Rank3
+Audio File: 20lugo_花心.wav, Best Match: 花心, Score: 49.70
+Audio File: 20lugo_被動.wav, Best Match: 被動, Score: 49.58
+Audio File: 20lugo_還是會寂寞.wav, Best Match: 還是會寂寞, Score: 55.59
+Audio File: 20lugo_靜止.wav, Best Match: 千里之外, Score: 68.05                   # in Rank33
+Audio File: 20torin_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 30.18
+Audio File: 20torin_倒帶.wav, Best Match: 倒帶, Score: 30.08
+Audio File: 20torin_凍結.wav, Best Match: 凍結, Score: 37.17
+Audio File: 20torin_娃娃國.wav, Best Match: 娃娃國, Score: 28.96
+Audio File: 20torin_家.wav, Best Match: 家, Score: 15.21
+Audio File: 20torin_小手拉大手.wav, Best Match: 小手拉大手, Score: 34.34
+Audio File: 20torin_小毛驢.wav, Best Match: 小毛驢, Score: 42.80
+Audio File: 20torin_小白花.wav, Best Match: 小白花, Score: 22.90
+Audio File: 20torin_小蜜蜂.wav, Best Match: 小蜜蜂, Score: 27.59
+Audio File: 20torin_愛笑的眼睛.wav, Best Match: 愛笑的眼睛, Score: 43.40
+Audio File: 20torin_溫柔.wav, Best Match: 溫柔, Score: 22.66
+Audio File: 20torin_當你.wav, Best Match: 當你, Score: 29.65
+Audio File: 20torin_當我們同在一起.wav, Best Match: 當我們同在一起, Score: 5.16
+Audio File: 20torin_蝴蝶.wav, Best Match: 蝴蝶, Score: 20.97
+Audio File: 20torin_記得.wav, Best Match: 記得, Score: 30.04
+Audio File: torin_一閃一閃亮晶晶.wav, Best Match: 一閃一閃亮晶晶, Score: 30.18

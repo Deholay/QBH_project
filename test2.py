@@ -58,7 +58,7 @@ def process_audio_query(audio_file):
     data, rate, _ = OnsetDetection.load_audio(audio_file)
     # 使用動態閾值
     onsets, _ = OnsetDetection.Onset_Detection(data, rate, time_slot_width, rho, laMbda, k=k_dynamic_threshold, use_median=use_median_threshold)
-    onsets = OnsetDetection.refine_onsets(onsets, data, rate, time_slot_width, min_interval=0.15, start_offset=0.2, end_offset=0.2, PLOT_ONSET = False)
+    onsets = OnsetDetection.refine_onsets(onsets, data, rate, time_slot_width, min_interval=0.15, start_offset=0.2, end_offset=0.2, PLOT_ONSET = True)
 
     # 基本假設：Onset 數量足夠
     if len(onsets) < 2:
@@ -96,6 +96,8 @@ def search_single_query(query_path, target_file, transition_matrix_folder,
     targets = load_target_data(target_file)
     transition_matrices = load_transition_matrices(transition_matrix_folder)
     query_diff, query_beat = process_audio_query(query_path)
+
+    print(f"Query diff: {query_diff},\n Query beat: {query_beat}") # Debug: 查看 query_diff 和 query_beat
 
     # 修正後的簡單檢查：檢查 query_diff 長度是否為 0
     if len(query_diff) == 0 and len(query_beat) == 0:
@@ -143,7 +145,7 @@ def search_single_query(query_path, target_file, transition_matrix_folder,
             if np.isinf(log_hmm_term):
                  final_score = float('inf')
             else:
-                 final_score = pitch_weight * distanceD + beat_weight * distanceB - hmm_weight * log_hmm_term
+                 final_score = pitch_weight * distanceD + beat_weight * distanceB + hmm_weight * log_hmm_term
 
         except ValueError as e: # 處理 distanceB/D 可能非數值的情況 (如果 DP 返回特殊值)
             print(f"Warning: Error calculating final score for {song_name}: {e}")
@@ -162,10 +164,8 @@ if __name__ == "__main__":
     # --- 設定路徑 ---
     # query_path = r"C:/Path/To/Your/Single/Query/humming.wav" # <--- 請修改為您的單一查詢檔案路徑
 
-    query_path = r"hummingdata\15\15bow_在凌晨.wav"
-
-    # query_path = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_對面的女孩看過來.wav"
-    # query_path = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_靜止.wav"
+    query_path = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_靜止.wav"
+    # query_path = r"C:/Users/mrjac/Desktop/丁建均老師信號處理專題/QBH_project/hummingdata/20/20lugo_火車快飛.wav"
 
 
 
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         for rank, result in enumerate(ranked_results, 1):
             print(f"Rank {rank}: {result['name']}, Score: {result['score']:.4f}, DistanceD: {result['distanceD']}, DistanceB: {result['distanceB']}, HMM Score: {result['hmm_score']}")
             # 只顯示前 20 名結果 (可選)
-            if rank >= 20:
+            if rank >= 100:
                 print("...")
                 break
     else:
