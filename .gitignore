@@ -1,0 +1,13 @@
+Result113-1.txt
+Result250328.txt
+Result250430.txt
+Result250508.txt
+.DS_store
+__pycache__
+.vscode
+code_data
+src/test.py
+src/test2.py
+src/hummingdata/Target_Tempo50.docx
+src/hummingdata/Target_tempo_50_utf-8.txt
+src/hummingdata/Target_tempo_50_ANSI.txt
