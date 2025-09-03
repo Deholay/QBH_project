@@ -8,6 +8,6 @@ __pycache__
 code_data
 src/test.py
 src/test2.py
-src/hummingdata/Target_Tempo50.docx
-src/hummingdata/Target_tempo_50_utf-8.txt
-src/hummingdata/Target_tempo_50_ANSI.txt
+src/FeaturesCNNModel.py
+src/FeaturesExtractFormAudio.py
+src/hummingdata

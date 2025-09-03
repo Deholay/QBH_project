@@ -16,25 +16,35 @@ __本系統分為三個部分__：
 專案中的所有程式統一放在 `src/` 目錄下，以下說明各檔案的用途：
 ```
 .
-│── OnsetDetection.py          # 音訊起始點偵測
-│── PitchEstimation.py         # 音高偵測與 MIDI 差值計算
-│── MelodyMatching.py          # 簡譜轉換為 MIDI diff
-│── HMM.py                     # HMM 演算法與分數計算
-│── DP.py                      # DP 匹配與分數計算
-│── main.py                    # 主程式
+│── OnsetDetection.py                   # 音訊起始點偵測
+│── PitchEstimation.py                  # 音高偵測與 MIDI 差值計算
+│── MelodyMatching.py                   # 簡譜轉換為 MIDI diff
+│── HMM.py                              # HMM 演算法與分數計算
+│── DP.py                               # DP 匹配與分數計算
+│── main.py                             # 主程式
 │
-├── hummingdata/               # 測試用哼唱音訊資料
-│   ├── 10/                    # 10 秒的測試資料
-│   ├── 15/                    # 15 秒的測試資料
-│   └── 20/                    # 20 秒的測試資料
+├── hummingdata/                        # 測試用哼唱音訊資料 (注一)
+│   ├── Target_tempo_50_utf-8.txt       # 目標歌曲資料 (注二)
+│   ├── 10/                             # 10 秒的測試資料
+│   ├── 15/                             # 15 秒的測試資料
+│   └── 20/                             # 20 秒的測試資料
 │
-├── HMM_midi_diff/             # 每首歌曲的 HMM 轉移矩陣 (CSV 格式)
-│
-├── Target_tempo_50_utf-8.txt  # 目標歌曲資料庫 (歌名+簡譜+beats)
-└── README.md                  # 專案說明文件
+└── Project_in_Lin's_thesis/            # 根據林同學論文的程式實作
+    ├── HMM_midi_diff                   # 根據 HMM_builder.py 產生的目標歌曲 HMM
+    ├── HMM_builder.py                  # 針對目標歌曲產生 HMM 的工具
+    ├── LevelFusion.py                  # 林同學論文提出的篩選歌曲機制程式 (注三)
+    └── MDP.py                          # 林同學論文提出的 Dynamic Programming algorithm (注四) 
 ```
-
-注： `hummingdata/` 內容由丁建均老師提供，本專案不包含內容檔案
+ 
+* 注一: `hummingdata/` 內容由丁建均老師提供，本專案不包含內容檔案，需手動建置資料夾
+* 注二: `Target_tempo_50_utf-8.txt` 內容格式應為
+    ```
+    歌曲名　　　　　　　　　　　　　　　　　MIDI number                     /beats
+    三輪車　　　　　　　　　　　　　　　　　11235535567HH5HH6536532123565321/22222242222224222222211211211224
+    ...
+    ```
+* 注三: `LevelFusion.py` 僅在測試時使用，對整體程式碼無關
+* 注四: `MDP.py` 僅在測試時使用，對整體程式碼無關
 
 ## 設定與安裝
 * __套件安裝__:
@@ -43,18 +53,18 @@ __本系統分為三個部分__：
 pip install numpy scipy matplotlib
 ```
 * __檔案配置__:
-在 `hummingdata/ (query)` 中放入需查詢的 `.wav` 檔案，分為10秒、15秒、20秒
+在 `hummingdata/` (query) 中放入需查詢的 `.wav` 檔案，分為10秒、15秒、20秒
 將 `Target_tempo_50_utf-8.txt` (target) 作為歌曲資料庫
 
 ## 使用流程
-__批次哼唱歌曲必較__
+### 批次哼唱歌曲必較
 1. __準備資料__
-* 將哼唱音訊 (.wav) 放到 `hummingdata/10` 或 `/15` 、 `/10`
+* 將哼唱音訊 (`.wav`) 放到 `hummingdata/10` 或 `/15` 、 `/10`
 * 確認目標歌曲資料 (`Target_tempo_50_utf-8.txt`) 已正確放置
-* 執行 `Project_in_Lin's_thesis/HMM_builder.py` 對於目標歌曲資料進行 HMM 建模
+* 修改 `Project_in_Lin's_thesis/HMM_builder.py` 的目標歌曲指向位置後執行，對目標歌曲資料進行 HMM 建模
 * 修改程式碼中 `query_dir` 、 `transtition_matrix_folder` 、 `target_file` 的指向位置
-    __example__:
     ```
+    example:
     query_dir = "hummingdata/10"
     transtition_matrix_folder = "Project_in_Lin's_thesis/HMM_midi_diff"
     target_file = "hummingdata/Target_tempo_50_utf-8.txt"
@@ -63,7 +73,7 @@ __批次哼唱歌曲必較__
 ```
 python main.py
 ```
-程式會先依照對每首 query 歌曲計算 Threshold，之後每首 query 歌曲與 target file 比對完後，輸出正確率與 Best Match
+程式會先依照對每首 query 歌曲個別計算 Threshold，之後每首 query 歌曲與 target file 比對完後，輸出正確率與 Best Match
 
 ## 使用工具與套件
 * __Python3__
@@ -72,5 +82,5 @@ python main.py
 * __matplotlib__: 結果繪圖與可視化
 
 ## __注意事項__
-* 若歌曲資料庫或是需查詢歌曲超過數百首，計算可能耗時。
-* 本專案在大於 20 秒歌曲查詢時表現較佳。
+* 若歌曲資料庫或是需查詢歌曲超過數百首，計算可能耗時
+* 本專案在大於 20 秒歌曲查詢時表現較佳
