@@ -59,7 +59,7 @@ pip install numpy scipy matplotlib
 ## 使用流程
 ### 批次哼唱歌曲必較
 1. __準備資料__
-* 將哼唱音訊 (`.wav`) 放到 `hummingdata/10` 或 `/15` 、 `/10`
+* 將哼唱音訊 (`.wav`) 放到 `hummingdata/10` 或 `/15` 、 `/20`
 * 確認目標歌曲資料 (`Target_tempo_50_utf-8.txt`) 已正確放置
 * 修改 `Project_in_Lin's_thesis/HMM_builder.py` 的目標歌曲指向位置後執行，對目標歌曲資料進行 HMM 建模
 * 修改程式碼中 `query_dir` 、 `transtition_matrix_folder` 、 `target_file` 的指向位置
